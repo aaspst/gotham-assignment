@@ -1,5 +1,5 @@
 import pytest
-from bat_functions import calculate_bat_power, signal_strength, get_bat_vehicle
+from bat_functions import calculate_bat_power, signal_strength, get_bat_vehicle, fetch_joker_info
 
 # Exercise 1 - Basic Tests and Parametrization
 
@@ -35,3 +35,16 @@ def test_get_bat_vehicle_known(bat_vehicles):
 def test_get_bat_vehicle_unknown():
     with pytest.raises(ValueError, match="Unknown vehicle: Batboat"):
         get_bat_vehicle("Batboat")
+
+# Exercise 3 - Mocking External Dependencies
+
+def test_fetch_joker_info_mock_sleep(mocker):
+    mock_sleep = mocker.patch("time.sleep")  # Mock only sleep
+
+    result = fetch_joker_info()
+
+    # Check the result is the real one 
+    assert result == {'mischief_level': 100, 'location': 'unknown'}
+
+    # Make sure sleep is called
+    mock_sleep.assert_called_once_with(1)
